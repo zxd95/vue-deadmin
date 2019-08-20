@@ -101,14 +101,9 @@
   import {getProductApi, deleteProductApi} from '@/api/product';
 
   const defaultListQuery = {
-    keyword: null,
     pageNum: 1,
     pageSize: 5,
-    publishStatus: null,
-    verifyStatus: null,
-    productSn: null,
-    productCategoryId: null,
-    brandId: null
+    publishStatus: null
   };
   export default {
     name: "productList",
@@ -170,21 +165,25 @@
       handleDeleteProduct() {
         if (this.multipleSelection.length === 0) {
           this.$message({
-            message: '请至少选择一个商品',
+            message: '批量删除功能暂未开启',
             type: 'warning'
           });
           return;
         }
-        let rowIds = this.multipleSelection.map(item => item.rowId).join(',');
-        deleteBannerApi(rowIds).then(response => {
-          if (response.message === 'success') {
-            this.getList();
-          }
-        });
+        // let rowIds = this.multipleSelection.map(item => item.rowId).join(',');
+        // deleteProductApi(rowIds).then(response => {
+        //   if (response.message === 'success') {
+        //     this.getList();
+        //   }
+        // });
       },
       // 编辑
       handleUpdateProduct(index,row) {
-        this.$router.push({path:'/pms/updateProduct',query:{id:row.id}});
+        this.$message({
+          message: '编辑功能暂未开启',
+          type: 'warning'
+        });
+        // this.$router.push({path:'/pms/updateProduct',query:{id:row.id}});
       }
     }
   }
