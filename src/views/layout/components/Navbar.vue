@@ -33,8 +33,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'sidebar',
-      // 'avatar'
+      'sidebar'
     ])
   },
   methods: {
@@ -42,10 +41,10 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      // this.$store.dispatch('LogOut').then(() => {
-      //   location.reload() // 为了重新实例化vue-router对象 避免bug
-      // })
-      // commit('SET_TOKEN', '')
+      this.$store.dispatch('LogOut').then(() => {
+        location.reload()
+      })
+      commit('SET_TOKEN', '')
       this.$router.push({path: '/login'})
     }
   }
@@ -93,4 +92,3 @@ export default {
   }
 }
 </style>
-
