@@ -35,8 +35,7 @@
       }
     },
     methods: {
-      handleFinishCommit(){
-        debugger
+      handleFinishCommit() {
         this.$emit('finishCommit', this.isEdit);
       }
     }
