@@ -47,11 +47,6 @@
       }
     },
     created() {
-      // if(this.isEdit){
-      //   getProduct(this.$route.query.id).then(response=>{
-      //     this.productParam=response.data;
-      //   });
-      // }
     },
     methods: {
       hideAll() {
@@ -82,26 +77,14 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          // if(isEdit){
-          //   updateProduct(this.$route.query.id,this.productParam).then(response=>{
-          //     this.$message({
-          //       type: 'success',
-          //       message: '提交成功',
-          //       duration:1000
-          //     });
-          //     this.$router.back();
-          //   });
-          // }else{
-            debugger
-            saveProductApi(this.productParam).then(response=>{
-              this.$message({
-                type: 'success',
-                message: '提交成功',
-                duration:1000
-              });
-              location.reload();
+          saveProductApi(this.productParam).then(response=>{
+            this.$message({
+              type: 'success',
+              message: '提交成功',
+              duration:1000
             });
-          // }
+            location.reload();
+          });
         })
       }
     }
