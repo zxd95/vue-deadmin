@@ -58,7 +58,7 @@
     },
     methods: {
       uploadUrl() {
-        return 'api/watch/mall/services/batch/upload'
+        return '/api/watch/mall/services/batch/upload'
       },
       emitInput(fileList) {
         let value=[];
@@ -113,5 +113,3 @@
 <style>
 
 </style>
-
-
