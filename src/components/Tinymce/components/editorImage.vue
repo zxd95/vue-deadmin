@@ -5,7 +5,7 @@
     </el-button>
     <el-dialog append-to-body :visible.sync="dialogVisible">
       <el-upload class="editor-slide-upload"
-                 action="http://macro-oss.oss-cn-shenzhen.aliyuncs.com"
+                 :action="uploadUrl()"
                  :data="dataObj"
                  :multiple="true"
                  :file-list="fileList"
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import {policy} from '@/api/oss'
+  // import {policy} from '@/api/oss'
 
   export default {
     name: 'editorSlideUpload',
@@ -49,6 +49,9 @@
       }
     },
     methods: {
+      uploadUrl() {
+        return '/api/watch/mall/services/batch/upload'
+      },
       checkAllSuccess() {
         return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
       },
