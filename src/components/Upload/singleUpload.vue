@@ -1,7 +1,7 @@
 <template> 
   <div>
     <el-upload
-      action="http://macro-oss.oss-cn-shenzhen.aliyuncs.com"
+      :action="uploadUrl()"
       :data="dataObj"
       list-type="picture"
       :multiple="false" :show-file-list="showFileList"
@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-  import {policy} from '@/api/oss'
+  // import {policy} from '@/api/oss'
 
   export default {
     name: 'singleUpload',
@@ -66,6 +66,9 @@
       };
     },
     methods: {
+      uploadUrl() {
+        return '/api/watch/mall/services/batch/upload'
+      },
       emitInput(val) {
         this.$emit('input', val)
       },
@@ -85,7 +88,6 @@
             _self.dataObj.key = response.data.dir + '/${filename}';
             _self.dataObj.dir = response.data.dir;
             _self.dataObj.host = response.data.host;
-            // _self.dataObj.callback = response.data.callback;
             resolve(true)
           }).catch(err => {
             console.log(err)
@@ -105,5 +107,3 @@
 <style>
 
 </style>
-
-
