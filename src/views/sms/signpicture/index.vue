@@ -98,144 +98,51 @@
   </div>
 </template>
 <script>
-  // import {
-  //   fetchList,
-  //   updateDeleteStatus,
-  //   updateNewStatus,
-  //   updateRecommendStatus,
-  //   updatePublishStatus
-  // } from '@/api/product'
-  import {fetchList as fetchSkuStockList,update as updateSkuStockList} from '@/api/skuStock'
-  import {fetchList as fetchProductAttrList} from '@/api/productAttr'
-  import {fetchList as fetchBrandList} from '@/api/brand'
-  import {fetchListWithChildren} from '@/api/productCate'
+  import {getSignApi, deleteSignApi} from '@/api/sign';
 
   const defaultListQuery = {
-    keyword: null,
     pageNum: 1,
     pageSize: 5,
-    publishStatus: null,
-    verifyStatus: null,
-    productSn: null,
-    productCategoryId: null,
-    brandId: null
+    publishStatus: null
   };
   export default {
     name: "productList",
     data() {
       return {
-        operates: [
-          {
-            label: "商品上架",
-            value: "publishOn"
-          },
-          {
-            label: "商品下架",
-            value: "publishOff"
-          },
-          {
-            label: "设为推荐",
-            value: "recommendOn"
-          },
-          {
-            label: "取消推荐",
-            value: "recommendOff"
-          },
-          {
-            label: "设为新品",
-            value: "newOn"
-          },
-          {
-            label: "取消新品",
-            value: "newOff"
-          },
-          {
-            label: "转移到分类",
-            value: "transferCategory"
-          },
-          {
-            label: "移入回收站",
-            value: "recycle"
-          }
-        ],
-        operateType: null,
         listQuery: Object.assign({}, defaultListQuery),
         list: null,
         total: null,
         listLoading: true,
-        selectProductCateValue: null,
         multipleSelection: [],
-        productCateOptions: [],
-        brandOptions: [],
-        publishStatusOptions: [{
-          value: 1,
-          label: '上架'
-        }, {
-          value: 0,
-          label: '下架'
-        }],
-        verifyStatusOptions: [{
-          value: 1,
-          label: '审核通过'
-        }, {
-          value: 0,
-          label: '未审核'
-        }]
+        productLength: ''
       }
     },
     created() {
+      this.$store.commit('SET_FLAG', 'product');
       this.getList();
     },
-    watch: {
-      selectProductCateValue: function (newValue) {
-        if (newValue != null && newValue.length == 2) {
-          this.listQuery.productCategoryId = newValue[1];
-        } else {
-          this.listQuery.productCategoryId = null;
-        }
-
-      }
-    },
-    filters: {
-      verifyStatusFilter(value) {
-        if (value === 1) {
-          return '审核通过';
-        } else {
-          return '未审核';
-        }
-      }
-    },
     methods: {
-      getProductSkuSp(row, index) {
-        if (index === 0) {
-          return row.sp1;
-        } else if (index === 1) {
-          return row.sp2;
-        } else {
-          return row.sp3;
-        }
-      },
-      // 商品列表查询
+      // 商品列表 
       getList() {
-        this.listLoading = true;  
-        fetchList(this.listQuery).then(response => {
+        getSignApi().then(response => {
           this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
+          this.list = response.result;
+          this.total = response.result.length;
+          this.total = response.result !== null ? response.result.length : 0;
+          this.productLength = response.result !== null ? response.result.length : 0;
+          this.$store.commit('GET_PRODUCTLISTLENGTH', this.productLength);
         });
       },
-      // 填加商品
+      // 添加
       handleAddProduct() {
-        this.$router.push({path:'/pms/addProduct'});
+        this.$router.push({path:'/pms/addSignpicture'});
       },
       handleSizeChange(val) {
         this.listQuery.pageNum = 1;
         this.listQuery.pageSize = val;
-        this.getList();
       },
       handleCurrentChange(val) {
         this.listQuery.pageNum = val;
-        this.getList();
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
@@ -247,42 +154,36 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let ids = [];
-          ids.push(row.id);
-          this.updateDeleteStatus(1, ids);
+          deleteProductApi(row.rowId).then(response => {
+            if (response.message === 'success') {
+              this.getList();
+            }
+          });
         });
       },
       // 批量删除
       handleDeleteProduct() {
-        debugger
         if (this.multipleSelection.length === 0) {
           this.$message({
-            message: '请至少选择一个商品',
+            message: '批量删除功能暂未开启',
             type: 'warning'
           });
           return;
         }
-        let ids = [];
-        ids.push(this.multipleSelection.map(item => item.id));
-        this.updateDeleteStatus(1, ids);
+        // let rowIds = this.multipleSelection.map(item => item.rowId).join(',');
+        // deleteProductApi(rowIds).then(response => {
+        //   if (response.message === 'success') {
+        //     this.getList();
+        //   }
+        // });
       },
-      // 更新商品
-      handleUpdateProduct(index,row){
-        this.$router.push({path:'/pms/updateProduct',query:{id:row.id}});
-      },
-      // 删除接口
-      updateDeleteStatus(deleteStatus, ids) {
-        let params = new URLSearchParams();
-        params.append('ids', ids);
-        params.append('deleteStatus', deleteStatus);
-        updateDeleteStatus(params).then(response => {
-          this.$message({
-            message: '删除成功',
-            type: 'success',
-            duration: 1000
-          });
+      // 编辑
+      handleUpdateProduct(index,row) {
+        this.$message({
+          message: '编辑功能暂未开启',
+          type: 'warning'
         });
-        this.getList();
+        // this.$router.push({path:'/pms/updateProduct',query:{id:row.id}});
       }
     }
   }
