@@ -49,7 +49,6 @@
 
 <script>
   import {isvalidUsername} from '@/utils/validate';
-  import {setSupport,getSupport,SupportUrl} from '@/utils/support';
   import login_center_bg from '@/assets/images/login_center_bg.png'
 
   export default {
@@ -71,8 +70,8 @@
       };
       return {
         loginForm: {
-          username: 'admin',
-          password: 'admin',
+          username: '',
+          password: '',
         },
         loginRules: {
           username: [{required: true, trigger: 'blur', validator: validateUsername}],
@@ -94,36 +93,12 @@
         }
       },
       handleLogin() {
-        // this.$refs.loginForm.validate(valid => {
-        //   debugger
-        //   if (valid) {
-        //     let isSupport = getSupport();
-        //     if(isSupport===undefined||isSupport==null){
-        //       this.dialogVisible =true;
-        //       return;
-        //     }
-        //     this.loading = true;
-            this.$store.dispatch('Login', this.loginForm).then(() => {
-              this.loading = false;
-              this.$router.push({path: '/'})
-            }).catch(() => {
-              debugger
-              this.loading = false
-            })
-        //   } else {
-        //     console.log('参数验证不合法！');
-        //     return false
-        //   }
-        // })
-      },
-      dialogConfirm(){
-        this.dialogVisible =false;
-        setSupport(true);
-        // window.location.href=SupportUrl;
-      },
-      dialogCancel(){
-        this.dialogVisible = false;
-        setSupport(false);
+        this.$store.dispatch('Login', this.loginForm).then(() => {
+          this.loading = false;
+          this.$router.push({path: '/'})
+        }).catch(() => {
+          this.loading = false
+        })
       }
     }
   }
