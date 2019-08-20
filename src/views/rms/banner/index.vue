@@ -97,20 +97,14 @@
   import {getBannerApi, deleteBannerApi} from '@/api/banner'
 
   const defaultListQuery = {
-    keyword: null,
     pageNum: 1,
     pageSize: 5,
-    publishStatus: null,
-    verifyStatus: null,
-    productSn: null,
-    productCategoryId: null,
-    brandId: null
+    publishStatus: null
   };
   export default {
     name: "productList",
     data() {
       return {
-        operateType: null,
         listQuery: Object.assign({}, defaultListQuery),
         list: null,
         total: null,
@@ -194,7 +188,7 @@
       // 编辑
       handleUpdateProduct(index,row){
         this.$message({
-          message: '编辑功能暂未开放',
+          message: '编辑功能暂未开启',
           type: 'warning'
         });
       }
